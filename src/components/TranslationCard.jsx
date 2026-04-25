@@ -1,4 +1,3 @@
-import DiagramViewer from "./DiagramViewer";
 import VoiceButton from "./VoiceButton";
 
 export default function TranslationCard({
@@ -36,16 +35,9 @@ export default function TranslationCard({
         <p className="text-gray-700">{result.explanation}</p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        <article className="rounded-xl bg-white p-4">
-          <h3 className="mb-1 text-sm font-bold text-gray-700">Analogy</h3>
-          <p className="text-gray-700">{result.analogy}</p>
-        </article>
-        <DiagramViewer
-          diagramType={result.diagramType}
-          alt={`${term} diagram`}
-          accentColor={audience.accentColor}
-        />
+      <section className="rounded-xl bg-white p-4">
+        <h3 className="mb-1 text-sm font-bold text-gray-700">Analogy</h3>
+        <p className="text-gray-700">{result.analogy}</p>
       </section>
 
       <section

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AudioInput from "./components/AudioInput";
 import GlossaryPanel from "./components/GlossaryPanel";
 import Header from "./components/Header";
 import QuickTerms from "./components/QuickTerms";
@@ -8,6 +9,7 @@ import TranslationCard from "./components/TranslationCard";
 import { ONCOLOGY_TERMS } from "./data/oncologyTerms";
 import { useAudience } from "./hooks/useAudience";
 import { useGlossary } from "./hooks/useGlossary";
+import { speakText } from "./lib/elevenlabs";
 import { translateMedicalTerm } from "./lib/gemini";
 
 export default function App() {
@@ -18,10 +20,12 @@ export default function App() {
   const [currentTerm, setCurrentTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState("text-text");
+  const [capturedAudioText, setCapturedAudioText] = useState("");
 
   const geminiReady = Boolean(import.meta.env.VITE_GEMINI_API_KEY);
 
-  const handleTranslate = async (termOverride) => {
+  const handleTranslate = async (termOverride, options = {}) => {
     const term = (termOverride ?? input).trim();
     if (!term || loading) return;
 
@@ -32,13 +36,33 @@ export default function App() {
     if (!termOverride) setInput(term);
 
     try {
-      const data = await translateMedicalTerm(term, audienceKey);
-      if (data) {
-        setResult(data);
+      const response = await translateMedicalTerm(term, audienceKey);
+      if (response?.ok) {
+        setResult(response.data);
+        const shouldSpeak =
+          options.autoSpeak || mode === "text-audio" || mode === "audio-audio";
+        if (shouldSpeak) {
+          const speechText = [
+            response.data?.simpleTerm,
+            response.data?.explanation,
+            response.data?.analogy,
+            response.data?.whatItMeans,
+            response.data?.reassurance,
+          ]
+            .filter(Boolean)
+            .join(". ");
+          if (speechText) {
+            await speakText(speechText, audience);
+          }
+        }
       } else if (!geminiReady) {
         setError("Missing Gemini API key. Add VITE_GEMINI_API_KEY in .env.");
       } else {
-        setError("Translation failed. Please check your API key and try again.");
+        setError(
+          response?.error ||
+            "Translation failed. Please check your API key and try again.",
+        );
+        console.error("Translate error details:", response?.error);
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -75,19 +99,54 @@ export default function App() {
             What did your doctor say?
           </h1>
           <p className="mx-auto max-w-lg text-gray-500">
-            Paste any cancer-related term or phrase. We will explain it in plain
-            language with diagrams.
+            Translate oncology language your way: text to text, text to audio, or
+            audio to audio.
           </p>
         </div>
 
-        <SearchBar
-          value={input}
-          onChange={setInput}
-          onTranslate={handleTranslate}
-          loading={loading}
-          accentColor={audience.accentColor}
-          fontSize={audience.fontSize}
-        />
+        <div className="mb-4 flex flex-wrap gap-2">
+          {[
+            { key: "text-text", label: "Text -> Text" },
+            { key: "text-audio", label: "Text -> Audio" },
+            { key: "audio-audio", label: "Audio -> Audio" },
+          ].map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              aria-label={`Switch mode to ${item.label}`}
+              onClick={() => setMode(item.key)}
+              className="rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300"
+              style={{
+                borderColor: audience.accentColor,
+                background: mode === item.key ? audience.accentColor : "#FFFFFF",
+                color: mode === item.key ? "#FFFFFF" : audience.accentColor,
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {mode !== "audio-audio" ? (
+          <SearchBar
+            value={input}
+            onChange={setInput}
+            onTranslate={handleTranslate}
+            loading={loading}
+            accentColor={audience.accentColor}
+            fontSize={audience.fontSize}
+          />
+        ) : (
+          <AudioInput
+            onTranscript={setCapturedAudioText}
+            onSubmitTranscript={(text) => {
+              setInput(text);
+              handleTranslate(text, { autoSpeak: true });
+            }}
+            loading={loading}
+            accentColor={audience.accentColor}
+          />
+        )}
 
         <QuickTerms
           terms={ONCOLOGY_TERMS}
@@ -122,8 +181,15 @@ export default function App() {
               <div className="rounded-2xl border-2 border-dashed border-gray-200 bg-white p-12 text-center">
                 <div className="mb-3 text-5xl">🔬</div>
                 <p className="text-gray-400">
-                  Enter a term above or click a quick term to start.
+                  {mode === "audio-audio"
+                    ? "Record audio above or click a quick term to start."
+                    : "Enter a term above or click a quick term to start."}
                 </p>
+                {mode === "audio-audio" && capturedAudioText && (
+                  <p className="mt-2 text-xs text-gray-500">
+                    Last transcript: {capturedAudioText}
+                  </p>
+                )}
               </div>
             )}
           </div>

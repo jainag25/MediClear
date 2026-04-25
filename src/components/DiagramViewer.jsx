@@ -1,4 +1,5 @@
 import { getDiagramUrl, isCloudinaryConfigured } from "../lib/cloudinary";
+import { useMemo, useState } from "react";
 
 function InlineDiagram({ type, accentColor }) {
   const stroke = accentColor || "#2E86AB";
@@ -67,21 +68,37 @@ function InlineDiagram({ type, accentColor }) {
 
 export default function DiagramViewer({ diagramType, alt, accentColor }) {
   const hasCloudinary = isCloudinaryConfigured();
-  const imageUrl = getDiagramUrl(diagramType);
+  const [imageFailed, setImageFailed] = useState(false);
+  const normalizedType = useMemo(() => {
+    const allowed = new Set([
+      "cell",
+      "spread",
+      "treatment",
+      "scan",
+      "blood",
+      "device",
+      "generic",
+    ]);
+    const key = String(diagramType || "generic").toLowerCase().trim();
+    return allowed.has(key) ? key : "generic";
+  }, [diagramType]);
+  const imageUrl = getDiagramUrl(normalizedType);
+  const useImage = hasCloudinary && !imageFailed;
 
   return (
     <div className="rounded-2xl bg-white p-4 ring-1 ring-gray-100">
-      {hasCloudinary ? (
+      {useImage ? (
         <img
           src={imageUrl}
           alt={alt || "medical diagram"}
           className="h-40 w-full rounded-xl object-cover"
+          onError={() => setImageFailed(true)}
         />
       ) : (
-        <InlineDiagram type={diagramType} accentColor={accentColor} />
+        <InlineDiagram type={normalizedType} accentColor={accentColor} />
       )}
       <p className="mt-2 text-center text-xs text-gray-500">
-        Diagram type: {diagramType || "generic"}
+        Diagram type: {normalizedType}
       </p>
     </div>
   );
