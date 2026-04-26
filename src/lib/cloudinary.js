@@ -1,13 +1,13 @@
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
 const DIAGRAM_MAP = {
-  cell: "oncoclear/cell-structure",
-  spread: "oncoclear/metastasis-spread",
-  treatment: "oncoclear/treatment-infusion",
-  scan: "oncoclear/pet-scan-view",
-  blood: "oncoclear/blood-cells",
-  device: "oncoclear/port-a-cath",
-  generic: "oncoclear/generic-medical",
+  cell: "mediclear/cell-structure",
+  spread: "mediclear/metastasis-spread",
+  treatment: "mediclear/treatment-infusion",
+  scan: "mediclear/pet-scan-view",
+  blood: "mediclear/blood-cells",
+  device: "mediclear/port-a-cath",
+  generic: "mediclear/generic-medical",
 };
 
 export function isCloudinaryConfigured() {

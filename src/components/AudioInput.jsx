@@ -71,7 +71,7 @@ export default function AudioInput({
   }
 
   return (
-    <div className="rounded-2xl bg-white p-4 ring-1 ring-gray-100">
+    <div className="rounded-2xl bg-[#f7fbff] p-4 ring-1 ring-[#b3cde0]">
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
@@ -79,7 +79,7 @@ export default function AudioInput({
           onClick={toggleListening}
           disabled={loading}
           className="rounded-xl px-4 py-2 text-sm font-bold text-white transition-all duration-300 disabled:opacity-50"
-          style={{ background: listening ? "#DC2626" : accentColor }}
+          style={{ background: listening ? "#03396c" : accentColor }}
         >
           {listening ? "Stop Mic" : "Start Mic"}
         </button>
@@ -89,13 +89,13 @@ export default function AudioInput({
           onClick={() => onSubmitTranscript(transcript)}
           disabled={!transcript.trim() || loading}
           className="rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-300 disabled:opacity-50"
-          style={{ borderColor: accentColor, color: accentColor }}
+          style={{ borderColor: accentColor, color: "#03396c" }}
         >
           Translate Audio
         </button>
       </div>
 
-      <div className="mt-3 rounded-xl bg-gray-50 p-3 text-sm text-gray-700">
+      <div className="mt-3 rounded-xl bg-white p-3 text-sm text-[#011f4b] ring-1 ring-[#dcebf5]">
         {transcript || "Your transcript will appear here..."}
       </div>
 

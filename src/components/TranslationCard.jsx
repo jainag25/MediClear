@@ -19,46 +19,45 @@ export default function TranslationCard({
 
   return (
     <div
-      className="animate-fade-up space-y-4 rounded-2xl p-5 ring-1 ring-black/5"
-      style={{ background: audience.cardColor }}
+      className="animate-fade-up space-y-4 rounded-2xl border-2 bg-white p-5 shadow-xl"
+      style={{ borderColor: "#005b96" }}
     >
       <header>
-        <h2 className="text-2xl font-black text-gray-900">{result.simpleTerm}</h2>
-        <p className="text-sm italic text-gray-500">From: {term}</p>
+        <h2 className="text-2xl font-black text-[#011f4b]">{result.simpleTerm}</h2>
+        <p className="text-sm italic text-[#03396c]">From: {term}</p>
       </header>
 
       <section
-        className={`rounded-xl border-l-4 bg-white p-4 ${audience.fontFamily}`}
-        style={{ borderLeftColor: audience.accentColor }}
+        className={`rounded-xl border-l-4 p-4 ${audience.fontFamily}`}
+        style={{
+          borderLeftColor: "#005b96",
+          background: "linear-gradient(to right, #b3cde0, #dcebf5)",
+        }}
       >
-        <h3 className="mb-1 text-sm font-bold text-gray-700">Explanation</h3>
-        <p className="text-gray-700">{result.explanation}</p>
-      </section>
-
-      <section className="rounded-xl bg-white p-4">
-        <h3 className="mb-1 text-sm font-bold text-gray-700">Analogy</h3>
-        <p className="text-gray-700">{result.analogy}</p>
+        <h3 className="mb-1 text-sm font-bold text-[#011f4b]">Explanation</h3>
+        <p className="text-[#011f4b]">{result.explanation}</p>
       </section>
 
       <section
-        className="rounded-xl p-4 text-gray-800"
-        style={{ background: `${audience.accentColor}20` }}
+        className="rounded-xl border-l-4 bg-[#eaf3fa] p-4"
+        style={{ borderLeftColor: "#03396c" }}
       >
+        <h3 className="mb-1 text-sm font-bold text-[#011f4b]">Analogy</h3>
+        <p className="text-[#011f4b]">{result.analogy}</p>
+      </section>
+
+      <section className="rounded-xl bg-[#dcebf5] p-4 text-[#011f4b]">
         <h3 className="mb-1 text-sm font-bold">What it means for you</h3>
         <p>{result.whatItMeans}</p>
       </section>
 
-      <section className="rounded-xl bg-green-50 p-4 text-green-800">
+      <section className="rounded-xl bg-[#f1f8fd] p-4 text-[#03396c]">
         <h3 className="mb-1 text-sm font-bold">Reassurance</h3>
-        <p>🌱 {result.reassurance}</p>
+        <p>{result.reassurance}</p>
       </section>
 
       <section className="flex flex-wrap items-center gap-2">
-        <VoiceButton
-          text={speechText}
-          audienceConfig={audience}
-          accentColor={audience.accentColor}
-        />
+        <VoiceButton text={speechText} audienceConfig={audience} accentColor="#005b96" />
         <button
           type="button"
           aria-label="Save translation to glossary"
@@ -66,12 +65,12 @@ export default function TranslationCard({
           disabled={isSaved}
           className="rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-300 disabled:cursor-default"
           style={{
-            borderColor: isSaved ? "#16A34A" : audience.accentColor,
-            color: isSaved ? "#FFFFFF" : audience.accentColor,
-            background: isSaved ? "#16A34A" : "#FFFFFF",
+            borderColor: "#005b96",
+            color: isSaved ? "#FFFFFF" : "#005b96",
+            background: isSaved ? "#005b96" : "#FFFFFF",
           }}
         >
-          {isSaved ? "✅ Saved!" : "💾 Save to Glossary"}
+          {isSaved ? "Saved" : "Save to Glossary"}
         </button>
       </section>
     </div>

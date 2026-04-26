@@ -38,7 +38,7 @@ export default function VoiceButton({ text, audienceConfig, accentColor }) {
         background: playing ? accentColor : "#FFFFFF",
       }}
     >
-      {playing ? "⏹ Stop" : "🔊 Read Aloud"}
+      {playing ? "Stop" : "Read Aloud"}
     </button>
   );
 }

@@ -2,7 +2,7 @@ export const AUDIENCES = {
   kids: {
     key: "kids",
     label: "Kids",
-    emoji: "🧒",
+    emoji: "",
     description: "Fun analogies for ages 8-14",
     promptGuidance:
       "Explain like you're talking to a curious 10-year-old. Use fun analogies - LEGO bricks, superheroes, video games, or animals. Keep sentences very short.",
@@ -18,7 +18,7 @@ export const AUDIENCES = {
   adult: {
     key: "adult",
     label: "Adult",
-    emoji: "🧑",
+    emoji: "",
     description: "Clear, plain English",
     promptGuidance:
       "Use clear, plain English for an adult with no medical background. No jargon. Reassuring but honest. Assume they want full information.",
@@ -34,7 +34,7 @@ export const AUDIENCES = {
   elderly: {
     key: "elderly",
     label: "Elderly",
-    emoji: "👴",
+    emoji: "",
     description: "Warm, slow, simple language",
     promptGuidance:
       "Use simple, warm, and reassuring language for an older adult. Short sentences. Avoid alarming words. Speak kindly and patiently. Define any necessary medical words.",

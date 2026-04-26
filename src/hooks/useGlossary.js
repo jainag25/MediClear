@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "oncoclear_glossary";
+const STORAGE_KEY = "mediclear_glossary";
 
 export function useGlossary() {
   const [glossary, setGlossary] = useState(() => {

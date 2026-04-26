@@ -16,12 +16,12 @@ export default function SearchBar({
   };
 
   return (
-    <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-gray-100">
+    <div className="rounded-2xl bg-[#f7fbff] p-3 ring-1 ring-[#b3cde0]">
       <div className="flex flex-col gap-3 md:flex-row">
         <textarea
           aria-label="Medical term input"
           rows={2}
-          className={`w-full resize-none rounded-xl border border-gray-200 px-4 py-3 ${fontSize} outline-none transition-all duration-300 focus:ring-2`}
+          className={`w-full resize-none rounded-xl border border-[#6497b1] bg-white px-4 py-3 ${fontSize} outline-none transition-all duration-300 focus:ring-2`}
           style={{ "--tw-ring-color": `${accentColor}55` }}
           placeholder="Type a cancer term (example: metastasis, PET scan, biopsy)..."
           value={value}
@@ -33,10 +33,9 @@ export default function SearchBar({
           aria-label="Translate medical term"
           disabled={disabled}
           onClick={() => onTranslate()}
-          className="rounded-xl px-5 py-3 text-sm font-bold text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 md:min-w-36"
-          style={{ background: accentColor }}
+          className="rounded-xl bg-gradient-to-r from-[#03396c] to-[#005b96] px-5 py-3 text-sm font-bold text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 md:min-w-36"
         >
-          Translate -&gt;
+          Translate
         </button>
       </div>
     </div>
